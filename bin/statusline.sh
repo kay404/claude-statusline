@@ -189,9 +189,11 @@ if [ -n "$session_duration" ]; then
 fi
 line1+="${sep}"
 case "$effort" in
+    max)    line1+="${red}● ${effort}${reset}" ;;
     high)   line1+="${magenta}● ${effort}${reset}" ;;
     medium) line1+="${dim}◑ ${effort}${reset}" ;;
     low)    line1+="${dim}◔ ${effort}${reset}" ;;
+    auto)   line1+="${cyan}◉ ${effort}${reset}" ;;
     *)      line1+="${dim}◑ ${effort}${reset}" ;;
 esac
 
