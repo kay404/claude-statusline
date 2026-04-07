@@ -212,7 +212,7 @@ stdin_seven_day_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percent
 
 if [ "$stdin_five_hour_pct" != "null" ] && [ -n "$stdin_five_hour_pct" ]; then
     # ── Use stdin rate_limits (accurate, no network call) ──
-    five_hour_pct="$stdin_five_hour_pct"
+    five_hour_pct=$(printf "%.0f" "$stdin_five_hour_pct")
     five_hour_reset_epoch=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
     five_hour_reset=""
     if [ -n "$five_hour_reset_epoch" ] && [ "$five_hour_reset_epoch" != "null" ]; then
@@ -227,7 +227,7 @@ if [ "$stdin_five_hour_pct" != "null" ] && [ -n "$stdin_five_hour_pct" ]; then
     [ -n "$five_hour_reset" ] && rate_lines+=" ${dim}⟳${reset} ${white}${five_hour_reset}${reset}"
 
     if [ "$stdin_seven_day_pct" != "null" ] && [ -n "$stdin_seven_day_pct" ]; then
-        seven_day_pct="$stdin_seven_day_pct"
+        seven_day_pct=$(printf "%.0f" "$stdin_seven_day_pct")
         seven_day_reset_epoch=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
         seven_day_reset=""
         if [ -n "$seven_day_reset_epoch" ] && [ "$seven_day_reset_epoch" != "null" ]; then
