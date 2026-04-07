@@ -207,10 +207,10 @@ esac
 rate_lines=""
 bar_width=10
 
-stdin_five_hour_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
-stdin_seven_day_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+stdin_five_hour_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // null')
+stdin_seven_day_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // null')
 
-if [ -n "$stdin_five_hour_pct" ] && [ "$stdin_five_hour_pct" != "null" ]; then
+if [ "$stdin_five_hour_pct" != "null" ] && [ -n "$stdin_five_hour_pct" ]; then
     # ── Use stdin rate_limits (accurate, no network call) ──
     five_hour_pct="$stdin_five_hour_pct"
     five_hour_reset_epoch=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
@@ -226,7 +226,7 @@ if [ -n "$stdin_five_hour_pct" ] && [ "$stdin_five_hour_pct" != "null" ]; then
     rate_lines+="${white}current${reset} ${five_hour_bar} ${five_hour_pct_color}${five_hour_pct_fmt}%${reset}"
     [ -n "$five_hour_reset" ] && rate_lines+=" ${dim}⟳${reset} ${white}${five_hour_reset}${reset}"
 
-    if [ -n "$stdin_seven_day_pct" ] && [ "$stdin_seven_day_pct" != "null" ]; then
+    if [ "$stdin_seven_day_pct" != "null" ] && [ -n "$stdin_seven_day_pct" ]; then
         seven_day_pct="$stdin_seven_day_pct"
         seven_day_reset_epoch=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
         seven_day_reset=""
